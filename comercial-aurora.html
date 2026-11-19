@@ -1,0 +1,1023 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comercial Aurora · Solicitudes</title>
+<style>
+:root {
+  color-scheme: light;
+  --ink:#172b39; --muted:#516375; --line:#dce5e9; --paper:#fff; --bg:#f3f6f7;
+  --navy:#132e39; --green:#07644e; --mint:#d8eee6; --radius:14px;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--ink); background:var(--bg); line-height:1.5;
+}
+*,*::before,*::after { box-sizing:border-box }
+body { margin:0 }
+[hidden] { display:none !important }
+button,input,select,textarea { font:inherit }
+button { cursor:pointer }
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible { outline:3px solid #16886b; outline-offset:3px }
+h1,h2,h3,p { margin:0 }
+header { background:var(--navy); color:white }
+.shell { max-width:1360px; padding-inline:clamp(16px,4vw,54px); margin:auto }
+.top { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-block:12px }
+.brand { display:flex; align-items:center; gap:12px; font-size:1rem; font-weight:750 }
+.mark { display:grid; place-items:center; width:39px; height:39px; border-radius:11px; background:#b5edce; color:#123b31; font-size:1.42rem; font-weight:850 }
+.profile { display:flex; align-items:center; gap:10px; font-size:.83rem }
+.profile label { color:#d9e9e7 }
+.profile select { width:auto; color:white; background:#244550; border-color:#58717b }
+main { padding-block:32px 48px }
+.heading,.section-heading,.dialog-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap }
+.heading { margin-bottom:22px }
+h1 { font-size:clamp(1.85rem,4vw,2.9rem); line-height:1.12; letter-spacing:-.05em }
+h2 { font-size:1.25rem; letter-spacing:-.025em }
+h3 { font-size:1rem }
+.subtitle,.muted,.help { color:var(--muted) }
+.subtitle { margin-top:7px }
+.help,.muted,small { font-size:.85rem }
+.btn { border:1px solid var(--line); background:var(--paper); color:var(--ink); border-radius:9px; min-height:40px; padding:8px 14px; font-size:.88rem; font-weight:650 }
+.btn:hover { background:#eaf2f0 }
+.primary { background:var(--green); border-color:var(--green); color:white }
+.primary:hover { background:#054f3e }
+.notice { margin-bottom:18px; padding:12px 15px; border:1px solid #8ac6b0; border-radius:10px; background:#e4f4ec; color:#134f40 }
+.notice.error { background:#fff0ed; color:#8d3028; border-color:#e4a39a }
+.notice:empty { display:none }
+.dashboard { margin-bottom:24px }
+.section-heading { align-items:center; margin-bottom:12px }
+.metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px }
+.metric { display:block; text-align:left; color:var(--ink); background:var(--paper); padding:15px; border:1px solid var(--line); border-radius:var(--radius); box-shadow:0 2px 5px #132e3906 }
+.metric:hover,.metric[aria-pressed="true"] { border-color:var(--green); box-shadow:0 0 0 1px var(--green) inset }
+.metric strong { display:block; font-size:1.75rem; line-height:1.15; margin-top:11px }
+.metric small { color:var(--muted) }
+.compliance { margin-top:12px; padding:11px 15px; background:#e7f1ee; border-radius:10px; color:#214d41; font-size:.9rem }
+.tag { display:inline-block; padding:3px 8px; border-radius:6px; background:#eaf0f3; color:#314d5e; font-size:.76rem; font-weight:700; white-space:normal }
+.normal,.resolved { background:#def0e8; color:#155344 }
+.watch { background:#fff1ca; color:#62440a }
+.risk { background:#ffe5d1; color:#833a0d }
+.late { background:#fce2df; color:#8a2825 }
+.panel { background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); box-shadow:0 2px 5px #132e3906 }
+.panel-head { padding:17px 18px 0 }
+.filters { display:grid; grid-template-columns:minmax(200px,1.5fr) repeat(3,minmax(110px,1fr)); gap:10px; padding:0 18px 15px }
+label { display:block; font-size:.84rem; font-weight:650 }
+input,select,textarea { display:block; width:100%; padding:8px 10px; min-height:40px; border-radius:8px; border:1px solid #aebfc7; color:var(--ink); background:white }
+label input,label select,label textarea { margin-top:4px }
+textarea { min-height:90px; resize:vertical }
+.inbox-scroll { overflow-x:auto }
+table { width:100%; border-collapse:collapse; font-size:.86rem; table-layout:fixed }
+th,td { text-align:left; padding:11px 10px; border-top:1px solid var(--line); vertical-align:middle; overflow-wrap:anywhere }
+th:first-child,td:first-child { padding-left:18px }
+th:last-child,td:last-child { padding-right:18px }
+th { background:#f4f7f8; color:#415665; font-size:.76rem }
+th:nth-child(1) { width:18% } th:nth-child(2) { width:24% } th:nth-child(3) { width:15% }
+th:nth-child(4) { width:12% } th:nth-child(5) { width:16% } th:nth-child(6) { width:15% }
+td small { display:block; color:var(--muted) }
+.ticket { color:var(--green); padding:4px 0; border:0; background:transparent; text-align:left; font-size:inherit; font-weight:750; overflow-wrap:anywhere }
+.ticket:hover { text-decoration:underline }
+.empty { padding:24px; text-align:center; color:var(--muted) }
+.data { margin-top:22px; padding:16px 18px }
+summary { cursor:pointer; font-weight:750 }
+.data-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-block:12px }
+.data-grid p { margin:5px 0 8px }
+.data-grid .btn { margin-top:8px }
+footer { border-top:1px solid var(--line); padding-block:14px 18px; color:var(--muted); font-size:.83rem }
+.footer-content { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px }
+footer a { color:var(--green); font-weight:700 }
+footer a:focus-visible { outline:3px solid #16886b; outline-offset:3px }
+dialog { width:min(720px,calc(100% - 24px)); max-height:calc(100% - 24px); padding:0; border:1px solid var(--line); border-radius:16px; color:var(--ink); background:white; box-shadow:0 20px 80px #132e3950 }
+dialog::backdrop { background:#112d3ba8 }
+.dialog-heading { align-items:center; padding:14px 20px; border-bottom:1px solid var(--line) }
+.dialog-body { padding:18px 20px }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px }
+.full { grid-column:1/-1 }
+.form-actions { display:flex; justify-content:flex-end; gap:9px; margin-top:16px }
+.detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 16px; margin:0 0 14px }
+dt { color:var(--muted); font-size:.8rem }
+dd { margin:0; overflow-wrap:anywhere }
+.description { white-space:pre-wrap; overflow-wrap:anywhere; margin-bottom:14px }
+.detail-section { border-top:1px solid var(--line); padding-top:13px; margin-top:13px }
+.detail-section h3 { margin-bottom:8px }
+.history { margin:0; padding-left:20px }
+.history li { padding:6px 0; overflow-wrap:anywhere }
+.history small { display:block; color:var(--muted) }
+@media (max-width:920px) {
+  .filters,.metrics { grid-template-columns:repeat(2,minmax(0,1fr)) }
+}
+@media (max-width:650px) {
+  .shell { padding-inline:14px }
+  main { padding-block:22px }
+  .profile label { font-size:.77rem }
+  .data-grid,.form-grid { grid-template-columns:minmax(0,1fr) }
+  table,tbody,tr { display:block }
+  thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%) }
+  tbody tr { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px 12px; border-top:1px solid var(--line); padding:10px 16px }
+  tbody tr:hover { background:#f8fbfa }
+  tbody td,tbody td:first-child,tbody td:last-child { border:0; padding:0 }
+  td::before { content:attr(data-label); display:block; color:var(--muted); font-size:.72rem }
+  td.empty { grid-column:1/-1; padding:10px }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="shell top">
+    <div class="brand"><span class="mark" aria-hidden="true">A</span> Comercial Aurora</div>
+    <div class="profile"><label for="profile">Perfil simulado</label><select id="profile"></select></div>
+  </div>
+</header>
+<main class="shell">
+  <div class="heading">
+    <div><h1>Solicitudes</h1><p class="subtitle" id="subtitle">Bandeja del equipo y seguimiento de plazos.</p></div>
+    <button class="btn primary" id="create" type="button">+ Nueva solicitud</button>
+  </div>
+  <div id="notice" class="notice" role="status"></div>
+  <section class="dashboard" id="dashboard" aria-labelledby="dashboard-title">
+    <div class="section-heading"><h2 id="dashboard-title">Control de plazos</h2><span class="muted">48 horas corridas · Hora de Colombia</span></div>
+    <div class="metrics" id="metrics"></div>
+    <p class="compliance" id="compliance"></p>
+  </section>
+  <section class="panel" aria-labelledby="inbox-title">
+    <div class="panel-head section-heading">
+      <div><h2 id="inbox-title">Bandeja de solicitudes</h2><p class="muted" id="count"></p></div>
+      <button class="btn" id="clear" type="button" hidden>Limpiar filtros</button>
+    </div>
+    <div class="filters">
+      <label>Buscar<input id="search" type="search" placeholder="Ticket, NIT o cliente"></label>
+      <label>Estado<select id="stateFilter"></select></label>
+      <label>Canal<select id="channelFilter"></select></label>
+      <label id="responsibleLabel">Responsable<select id="agentFilter"></select></label>
+    </div>
+    <div class="inbox-scroll">
+      <table aria-label="Solicitudes">
+        <thead><tr><th scope="col">Ticket</th><th scope="col">Cliente</th><th scope="col">Estado</th><th scope="col">Responsable</th><th scope="col">Plazo</th><th scope="col">Canal</th></tr></thead>
+        <tbody id="tickets"></tbody>
+      </table>
+    </div>
+  </section>
+  <details class="panel data" id="data">
+    <summary>Datos y respaldo</summary>
+    <div class="data-grid">
+      <div>
+        <h3>Directorio de clientes</h3>
+        <p class="help">CSV con encabezados <code>nit,razon_social</code> o JSON con esas dos claves. Escribe el NIT como texto para conservar los ceros iniciales.</p>
+        <label for="importFile">Importar clientes</label>
+        <input id="importFile" type="file" accept=".csv,.json">
+        <p class="help" id="importResult" role="status"></p>
+      </div>
+      <div>
+        <h3>Respaldo de la sesión</h3>
+        <p class="help">Exporta antes de cerrar el archivo. Puedes abrir el respaldo en una sesión nueva.</p>
+        <button class="btn" id="export" type="button">Exportar respaldo JSON</button>
+        <label for="restoreFile">Restaurar respaldo</label>
+        <input id="restoreFile" type="file" accept=".json">
+        <p class="help" id="backupResult" role="status"></p>
+      </div>
+    </div>
+  </details>
+</main>
+<footer>
+  <div class="shell footer-content">
+    <span>Prototipo local · <span id="sessionStatus">Datos ficticios precargados</span></span>
+    <a id="downloadApp" href="" download="comercial-aurora.html" hidden>Descargar HTML</a>
+  </div>
+</footer>
+
+<dialog id="createDialog" aria-labelledby="create-title">
+  <div class="dialog-heading"><h2 id="create-title">Nueva solicitud</h2><button class="btn" type="button" data-close>Cerrar</button></div>
+  <div class="dialog-body">
+    <form id="createForm" novalidate>
+      <div class="notice error" id="createError" role="alert"></div>
+      <div class="form-grid">
+        <label class="full">Cliente por NIT o razón social<input id="customer" name="customer" type="search" autocomplete="off" placeholder="Busca para filtrar el directorio"></label>
+        <label class="full">Cliente <select id="customerChoice" name="client" required></select></label>
+        <label>Canal<select name="channel" required></select></label>
+        <label>Tipo de solicitud<select name="type" required></select></label>
+        <label class="full">Referencia de pedido (opcional)<input name="order" maxlength="100"></label>
+        <label class="full">Descripción<textarea name="description" required minlength="10"></textarea><span class="help">Escribe al menos 10 caracteres.</span></label>
+      </div>
+      <div class="form-actions"><button class="btn" type="button" data-close>Cancelar</button><button class="btn primary" type="submit">Radicar solicitud</button></div>
+    </form>
+  </div>
+</dialog>
+<dialog id="detailDialog" aria-labelledby="detailTitle">
+  <div class="dialog-heading"><h2 id="detailTitle">Detalle</h2><button class="btn" type="button" data-close>Cerrar</button></div>
+  <div class="dialog-body" id="detailBody"></div>
+</dialog>
+<dialog id="confirmDialog" aria-labelledby="confirm-title">
+  <div class="dialog-heading"><h2 id="confirm-title">Restaurar respaldo</h2></div>
+  <form method="dialog" class="dialog-body">
+    <p>El respaldo reemplazará los datos de la sesión actual. ¿Quieres restaurarlo?</p>
+    <div class="form-actions"><button class="btn" value="cancel" autofocus>Cancelar</button><button class="btn primary" value="restore">Restaurar sesión</button></div>
+  </form>
+</dialog>
+<template id="assignTemplate">
+  <form class="detail-section">
+    <h3>Reasignar solicitud</h3>
+    <label>Nuevo responsable<select name="next" required></select></label>
+    <div class="form-actions"><button class="btn primary">Reasignar</button></div>
+    <p role="alert"></p>
+  </form>
+</template>
+<template id="statusTemplate">
+  <form class="detail-section">
+    <h3>Actualizar solicitud</h3>
+    <label>Nuevo estado<select name="next" required></select></label>
+    <label hidden>Respuesta de fondo<textarea name="answer"></textarea></label>
+    <p class="notice error" role="alert"></p>
+    <div class="form-actions"><button class="btn primary">Guardar estado</button></div>
+  </form>
+</template>
+<script>
+(() => {
+  "use strict";
+
+  const HOUR = 3_600_000;
+  const LIMIT = 48 * HOUR;
+  const ZONE = "America/Bogota";
+  const VERSION = 1;
+  const people = [
+    { id: "coordinator", name: "Coordinador", role: "coordinator" },
+    { id: "agent1", name: "Agente 1", role: "agent" },
+    { id: "agent2", name: "Agente 2", role: "agent" },
+    { id: "agent3", name: "Agente 3", role: "agent" },
+    { id: "agent4", name: "Agente 4", role: "agent" },
+  ];
+  const agents = people.filter(person => person.role === "agent");
+  const channels = {
+    message: "Mensajería",
+    email: "Correo electrónico",
+    phone: "Llamada telefónica",
+  };
+  const types = {
+    stock: "Consulta de stock",
+    order: "Estado del pedido",
+    delivery: "Inconformidad de envío",
+    billing: "Facturación y cobro",
+    return: "Devolución",
+  };
+  const states = {
+    new: "Nuevo",
+    working: "En proceso",
+    logistics: "Pendiente logística",
+    sales: "Pendiente ventas",
+    resolved: "Resuelto",
+    closed: "Cerrado",
+  };
+  const transitions = {
+    new: ["working", "logistics", "sales", "resolved"],
+    working: ["logistics", "sales", "resolved"],
+    logistics: ["working", "sales", "resolved"],
+    sales: ["working", "logistics", "resolved"],
+    resolved: ["closed"],
+    closed: [],
+  };
+  const bands = [
+    { id: "normal", label: "En plazo", range: "Menos de 24 h" },
+    { id: "watch", label: "Aviso de 24 h", range: "De 24 a menos de 36 h" },
+    { id: "risk", label: "Alerta de 36 h", range: "De 36 a 48 h" },
+    { id: "late", label: "Vencido", range: "Más de 48 h" },
+  ];
+  const dateFormat = new Intl.DateTimeFormat("es-CO", {
+    timeZone: ZONE, dateStyle: "medium", timeStyle: "short",
+  });
+  const monthFormat = new Intl.DateTimeFormat("en", {
+    timeZone: ZONE, year: "numeric", month: "2-digit",
+  });
+  const numberFormat = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 2 });
+  const percentFormat = new Intl.NumberFormat("es-CO", { style: "percent", maximumFractionDigits: 1 });
+
+  const byId = id => document.getElementById(id);
+  const createDialog = byId("createDialog");
+  const detailDialog = byId("detailDialog");
+  const confirmDialog = byId("confirmDialog");
+  const createForm = byId("createForm");
+  const fields = createForm.elements;
+  const profile = byId("profile");
+  const filters = [byId("search"), byId("stateFilter"), byId("channelFilter"), byId("agentFilter")];
+  const has = (object, key) => Object.hasOwn(object, key);
+  const known = (object, key) => typeof key === "string" && has(object, key);
+  const personName = id => people.find(person => person.id === id).name;
+  const isAgent = id => agents.some(agent => agent.id === id);
+  const isCoordinator = () => profile.value === "coordinator";
+  const isActive = ticket => ticket.resolvedAt === null;
+  const maySee = ticket => isCoordinator() || ticket.agent === profile.value;
+  const iso = time => new Date(time).toISOString();
+  const date = value => dateFormat.format(new Date(value));
+  const elapsed = ticket => Date.parse(ticket.resolvedAt) - Date.parse(ticket.receivedAt);
+  const deadline = ticket => Date.parse(ticket.receivedAt) + LIMIT;
+  const normalize = text => text.toLocaleLowerCase("es-CO").normalize("NFD").replace(/\p{Diacritic}/gu, "");
+  const validText = text => typeof text === "string" && text.trim().length > 0;
+
+  let data = demonstration(Date.now());
+  let selectedBand = "";
+  let detailId = "";
+  let fileOperation = 0;
+
+  function monthAt(time) {
+    const parts = monthFormat.formatToParts(new Date(time));
+    return parts.find(part => part.type === "year").value + parts.find(part => part.type === "month").value;
+  }
+
+  function newTicket(state, input, time, actor) {
+    const month = monthAt(time);
+    const number = (state.sequences[month] ?? 0) + 1;
+    if (number > 9999) throw new Error("Se agotaron los consecutivos de este mes.");
+    const agent = agents[state.nextAgent].id;
+    const ticket = {
+      ...input,
+      id: `AUR-${month}-${String(number).padStart(4, "0")}`,
+      agent,
+      receivedAt: iso(time),
+      status: "new",
+      resolvedAt: null,
+      answer: "",
+    };
+    state.sequences[month] = number;
+    state.nextAgent = (state.nextAgent + 1) % agents.length;
+    state.tickets.push(ticket);
+    state.history.push({
+      ticket: ticket.id, at: ticket.receivedAt, actor, action: "created", agent,
+    });
+    return ticket;
+  }
+
+  function transition(state, ticket, next, answer, time, actor) {
+    const at = iso(time);
+    state.history.push({
+      ticket: ticket.id, at, actor, action: "status",
+      from: ticket.status, to: next, ...(next === "resolved" ? { answer } : {}),
+    });
+    ticket.status = next;
+    if (next === "resolved") {
+      ticket.resolvedAt = at;
+      ticket.answer = answer;
+    }
+  }
+
+  function demonstration(now) {
+    const state = {
+      version: VERSION, users: people.map(person => ({ ...person })),
+      clients: [
+        { nit: "900100001", razon_social: "Colegio Bosques del Alba" },
+        { nit: "900100002", razon_social: "Estudio Brújula" },
+        { nit: "900100003", razon_social: "Instituto Horizonte" },
+        { nit: "900100004", razon_social: "Papelería del Parque" },
+        { nit: "900100005", razon_social: "Grupo Jacaranda" },
+        { nit: "900100006", razon_social: "Fundación Ladera" },
+      ],
+      tickets: [], history: [], sequences: {}, nextAgent: 0,
+    };
+    const examples = [
+      [70, 52, 1, "phone", "delivery", "El cliente reportó dos cajas faltantes en la entrega del pedido."],
+      [56, 30, 0, "email", "billing", "El colegio solicitó una copia corregida de su factura."],
+      [53, null, 3, "message", "return", "Solicita devolver cuatro paquetes de sobres que llegaron abiertos.", "logistics"],
+      [38, null, 2, "email", "delivery", "El pedido llegó a la sede administrativa y debe trasladarse a la sede escolar.", "logistics"],
+      [31, null, 5, "phone", "billing", "Solicita aclarar el valor de transporte registrado en la factura.", "sales"],
+      [26, null, 4, "message", "order", "El cliente quiere confirmar la fecha de llegada de las resmas.", "working"],
+      [15, null, 0, "email", "return", "El colegio solicita cambiar dos cajas por una referencia distinta.", "working"],
+      [5, null, 1, "message", "stock", "Consulta existencias de carpetas tamaño oficio para un pedido periódico."],
+    ];
+    for (const [age, resolution, index, channel, type, description, status] of examples) {
+      const received = now - age * HOUR;
+      const ticket = newTicket(state, {
+        client: state.clients[index].nit, channel, type, description, order: "",
+      }, received, "agent1");
+      if (status) transition(state, ticket, status, "", received + HOUR, ticket.agent);
+      if (resolution !== null) {
+        transition(state, ticket, "resolved", "Se confirmó la solución con el cliente.", received + resolution * HOUR, ticket.agent);
+        if (resolution <= 48) transition(state, ticket, "closed", "", received + (resolution + 1) * HOUR, ticket.agent);
+      }
+    }
+    return state;
+  }
+
+  function bandFor(ticket, now) {
+    if (!isActive(ticket)) return "";
+    const age = now - Date.parse(ticket.receivedAt);
+    if (age > LIMIT) return "late";
+    if (age >= 36 * HOUR) return "risk";
+    if (age >= 24 * HOUR) return "watch";
+    return "normal";
+  }
+
+  function duration(ms) {
+    if (ms < 60_000) return "menos de 1 min";
+    const minutes = Math.floor(ms / 60_000);
+    const hours = Math.floor(minutes / 60);
+    return hours ? `${hours} h ${minutes % 60} min` : `${minutes} min`;
+  }
+
+  function deadlineText(ticket, now) {
+    if (!isActive(ticket)) {
+      return elapsed(ticket) <= LIMIT ? "Resuelto a tiempo" : "Resuelto fuera de plazo";
+    }
+    const remaining = deadline(ticket) - now;
+    if (remaining === 0) return "En el límite de 48 h";
+    return remaining > 0 ? `Quedan ${duration(remaining)}` : `Vencido hace ${duration(-remaining)}`;
+  }
+
+  function parseCsv(source) {
+    const rows = [];
+    let row = [];
+    let field = "";
+    let quoting = false;
+    let quoted = false;
+
+    const endField = () => {
+      row.push(field.trim());
+      field = "";
+      quoted = false;
+    };
+    const endRow = () => {
+      endField();
+      if (row.length > 1 || row[0]) rows.push(row);
+      row = [];
+    };
+
+    for (let index = 0; index < source.length; index++) {
+      const character = source[index];
+      if (quoting) {
+        if (character !== '"') field += character;
+        else if (source[index + 1] === '"') {
+          field += '"';
+          index++;
+        } else {
+          quoting = false;
+          quoted = true;
+        }
+      } else if (character === ",") {
+        endField();
+      } else if (character === "\n" || character === "\r") {
+        if (character === "\r" && source[index + 1] === "\n") index++;
+        endRow();
+      } else if (character === '"' && !field.trim() && !quoted) {
+        field = "";
+        quoting = true;
+      } else if (quoted ? character.trim() : character === '"') {
+        throw new Error("Comillas inválidas en el CSV.");
+      } else if (!quoted) {
+        field += character;
+      }
+    }
+    if (quoting) throw new Error("Hay una celda CSV con comillas sin cerrar.");
+    endRow();
+
+    const header = rows.shift();
+    const nit = header?.indexOf("nit");
+    const name = header?.indexOf("razon_social");
+    if (header?.length !== 2 || nit < 0 || name < 0) {
+      throw new Error("El CSV debe incluir los encabezados nit y razon_social.");
+    }
+    return rows.map((columns, index) => {
+      if (columns.length !== header.length) throw new Error(`Columnas inválidas en el registro CSV ${index + 1}.`);
+      return { nit: columns[nit], razon_social: columns[name] };
+    });
+  }
+
+  function readClients(items) {
+    if (!Array.isArray(items)) throw new Error("El directorio debe contener un arreglo de clientes.");
+    return items.map((item, index) => {
+      if (!validText(item?.nit) || !validText(item?.razon_social)) {
+        throw new Error(`Registro ${index + 1}: escribe el NIT y la razón social como texto.`);
+      }
+      return { nit: item.nit.trim(), razon_social: item.razon_social.trim() };
+    });
+  }
+
+  function parseJson(source) {
+    try {
+      return JSON.parse(source);
+    } catch {
+      throw new Error("El contenido no corresponde a un JSON válido.");
+    }
+  }
+
+  const isRecord = value => value !== null && typeof value === "object" && !Array.isArray(value);
+  const isInstant = value => typeof value === "string" && Number.isFinite(Date.parse(value)) && iso(Date.parse(value)) === value;
+
+  function readBackup(source) {
+    const backup = parseJson(source);
+    if (!isRecord(backup) || backup.version !== VERSION) throw new Error("Versión de respaldo incompatible.");
+    const { users, tickets, history, sequences, nextAgent } = backup;
+    if (!Array.isArray(users) || users.length !== people.length || !people.every(person =>
+      users.some(user => user?.id === person.id && user.name === person.name && user.role === person.role)
+    )) throw new Error("El respaldo debe incluir el coordinador y los cuatro agentes.");
+    const clients = readClients(backup.clients);
+    const knownClients = new Set(clients.map(client => client.nit));
+    if (knownClients.size !== clients.length) throw new Error("El respaldo contiene NIT duplicados.");
+    if (!Array.isArray(tickets) || !Array.isArray(history) || !isRecord(sequences)) {
+      throw new Error("Faltan solicitudes, historial o consecutivos en el respaldo.");
+    }
+    if (!Number.isInteger(nextAgent) || nextAgent < 0 || nextAgent >= agents.length) {
+      throw new Error("El turno del próximo agente es inválido.");
+    }
+    for (const [month, sequence] of Object.entries(sequences)) {
+      if (!/^\d{4}(0[1-9]|1[0-2])$/.test(month) || !Number.isInteger(sequence) || sequence < 0 || sequence > 9999) {
+        throw new Error("Los consecutivos mensuales del respaldo son inválidos.");
+      }
+    }
+
+    const ticketsById = new Map();
+    for (const ticket of tickets) {
+      const id = typeof ticket?.id === "string" && /^AUR-(\d{6})-(\d{4})$/.exec(ticket.id);
+      if (!id || Number(id[2]) < 1 || !(sequences[id[1]] >= Number(id[2])) || ticketsById.has(ticket.id) ||
+        !knownClients.has(ticket.client) || !isAgent(ticket.agent) || !known(channels, ticket.channel) ||
+        !known(types, ticket.type) || !known(states, ticket.status) || !isInstant(ticket.receivedAt) ||
+        id[1] !== monthAt(Date.parse(ticket.receivedAt)) || !validText(ticket.description) ||
+        ticket.description.trim().length < 10 || typeof ticket.order !== "string" || typeof ticket.answer !== "string") {
+        throw new Error("Hay una solicitud inválida, duplicada o con referencias inexistentes.");
+      }
+      const resolved = ticket.status === "resolved" || ticket.status === "closed";
+      if (resolved ? !isInstant(ticket.resolvedAt) || elapsed(ticket) < 0 || !validText(ticket.answer)
+        : ticket.resolvedAt !== null || ticket.answer !== "") {
+        throw new Error("El estado de resolución de una solicitud es incoherente.");
+      }
+      ticketsById.set(ticket.id, ticket);
+    }
+
+    validateHistory(history, ticketsById);
+    return { version: VERSION, clients, users, tickets, history, sequences, nextAgent };
+  }
+
+  function validateHistory(events, ticketsById) {
+    const log = new Map();
+    for (const event of events) {
+      const ticket = ticketsById.get(event?.ticket);
+      const actor = people.find(person => person.id === event?.actor);
+      if (!ticket || !actor || !isInstant(event.at)) {
+        throw new Error("El historial contiene referencias o fechas inválidas.");
+      }
+      const previous = log.get(ticket.id);
+      if (event.action === "created" && !previous && actor.role === "agent" &&
+          isAgent(event.agent) && event.at === ticket.receivedAt) {
+        log.set(ticket.id, { status: "new", agent: event.agent, at: event.at, resolvedAt: null, answer: "" });
+      } else if (previous && event.at >= previous.at && event.action === "status" &&
+          actor.id === previous.agent && event.from === previous.status &&
+          transitions[previous.status].includes(event.to) && (event.to !== "resolved" || validText(event.answer))) {
+        previous.status = event.to;
+        previous.at = event.at;
+        if (event.to === "resolved") {
+          previous.resolvedAt = event.at;
+          previous.answer = event.answer;
+        }
+      } else if (previous && event.at >= previous.at && event.action === "reassigned" &&
+          actor.role === "coordinator" && previous.resolvedAt === null && event.from === previous.agent &&
+          isAgent(event.to) && event.to !== event.from) {
+        previous.agent = event.to;
+        previous.at = event.at;
+      } else {
+        throw new Error("El historial contiene una acción incoherente.");
+      }
+    }
+    for (const [id, ticket] of ticketsById) {
+      const entry = log.get(id);
+      if (!entry || entry.status !== ticket.status || entry.agent !== ticket.agent ||
+          entry.resolvedAt !== ticket.resolvedAt || entry.answer !== ticket.answer) {
+        throw new Error("El historial no coincide con el estado actual de una solicitud.");
+      }
+    }
+  }
+
+  function timeFor(ticket) {
+    const last = data.history.findLast(event => event.ticket === ticket.id);
+    return Math.max(Date.now(), Date.parse(last.at));
+  }
+
+  // Los datos del usuario siempre se añaden como texto al documento.
+  function element(tag, text = "", className = "") {
+    const node = document.createElement(tag);
+    if (text) node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  }
+
+  function choices(select, entries, emptyLabel) {
+    const options = entries.map(([value, label]) => new Option(label, value));
+    if (emptyLabel !== undefined) options.unshift(new Option(emptyLabel, ""));
+    select.replaceChildren(...options);
+  }
+
+  function setNotice(message = "", error = false) {
+    const notice = byId("notice");
+    notice.textContent = message;
+    notice.classList.toggle("error", error);
+  }
+
+  function setDirty(value, cleanMessage = "Datos ficticios precargados") {
+    byId("sessionStatus").textContent = value ? "Hay cambios sin exportar" : cleanMessage;
+  }
+
+  const metrics = bands.map(band => {
+    const button = element("button", "", "metric");
+    button.type = "button";
+    button.dataset.band = band.id;
+    const count = element("strong", "0");
+    button.append(element("span", band.label, `tag ${band.id}`), count, element("small", band.range));
+    byId("metrics").append(button);
+    return { button, count, ...band };
+  });
+
+  function updateDashboard(now) {
+    if (!isCoordinator()) return;
+    const counts = { normal: 0, watch: 0, risk: 0, late: 0 };
+    let completed = 0;
+    let onTime = 0;
+    for (const ticket of data.tickets) {
+      const band = bandFor(ticket, now);
+      if (band) counts[band]++;
+      else {
+        completed++;
+        if (elapsed(ticket) <= LIMIT) onTime++;
+      }
+    }
+    for (const metric of metrics) {
+      metric.count.textContent = counts[metric.id];
+      metric.button.setAttribute("aria-pressed", String(selectedBand === metric.id));
+    }
+    byId("compliance").textContent = completed
+      ? `Cumplimiento · ${percentFormat.format(onTime / completed)} · ${onTime} de ${completed} resueltas dentro de 48 h`
+      : "Cumplimiento · Aún no hay casos resueltos";
+  }
+
+  function matchedTickets(now) {
+    const [query, status, channel, agent] = filters.map(filter => filter.value);
+    const search = normalize(query.trim());
+    const clients = new Map(data.clients.map(client => [client.nit, client]));
+    return data.tickets
+      .filter(ticket => {
+        const client = clients.get(ticket.client);
+        return maySee(ticket) &&
+          (!search || [ticket.id, client.nit, client.razon_social].some(value => normalize(value).includes(search))) &&
+          (!status || ticket.status === status) && (!channel || ticket.channel === channel) &&
+          (!agent || ticket.agent === agent) && (!selectedBand || bandFor(ticket, now) === selectedBand);
+      })
+      .sort((a, b) => b.receivedAt.localeCompare(a.receivedAt))
+      .map(ticket => [ticket, clients.get(ticket.client)]);
+  }
+
+  function setRowDeadline(row, ticket, now) {
+    const band = bandFor(ticket, now);
+    const tag = row.cells[4].firstChild;
+    tag.className = `tag ${band || (elapsed(ticket) <= LIMIT ? "resolved" : "late")}`;
+    tag.textContent = band ? bands.find(item => item.id === band).label : deadlineText(ticket, now);
+  }
+
+  function renderInbox(now) {
+    const body = byId("tickets");
+    const active = document.activeElement;
+    const focusedTicket = body.contains(active) ? active.dataset.ticket : "";
+    const matches = matchedTickets(now);
+    const visible = data.tickets.filter(maySee).length;
+    const bandLabel = bands.find(band => band.id === selectedBand)?.label;
+    byId("count").textContent = `${matches.length} de ${visible} solicitudes${bandLabel ? ` · ${bandLabel}` : ""}`;
+    byId("clear").hidden = !selectedBand && !filters.some(filter => filter.value);
+    const rows = matches.map(([ticket, client]) => {
+      const row = element("tr");
+      row.dataset.ticket = ticket.id;
+      const open = element("button", ticket.id, "ticket");
+      open.type = "button";
+      open.dataset.ticket = ticket.id;
+      const values = [open, element("span", client.razon_social),
+        element("span", states[ticket.status], "tag"), element("span", personName(ticket.agent)),
+        element("span", "", "tag"), element("span", channels[ticket.channel])];
+      const labels = ["Ticket", "Cliente", "Estado", "Responsable", "Plazo", "Canal"];
+      values.forEach((value, index) => {
+        const cell = row.insertCell();
+        cell.dataset.label = labels[index];
+        cell.append(value);
+        if (index === 0) cell.append(element("small", date(ticket.receivedAt)));
+        if (index === 1) cell.append(element("small", `NIT ${client.nit}`));
+      });
+      setRowDeadline(row, ticket, now);
+      return row;
+    });
+    if (!rows.length) {
+      const row = element("tr");
+      const cell = element("td", "No hay solicitudes que coincidan con los filtros.", "empty");
+      cell.colSpan = 6;
+      row.append(cell);
+      rows.push(row);
+    }
+    body.replaceChildren(...rows);
+    if (focusedTicket) {
+      const target = [...body.querySelectorAll("button")].find(button => button.dataset.ticket === focusedTicket);
+      (target ?? byId("search")).focus({ preventScroll: true });
+    }
+  }
+
+  function render(now = Date.now()) {
+    const coordinator = isCoordinator();
+    byId("create").hidden = coordinator;
+    byId("dashboard").hidden = !coordinator;
+    byId("data").hidden = !coordinator;
+    byId("responsibleLabel").hidden = !coordinator;
+    byId("subtitle").textContent = coordinator ? "Consulta los casos del equipo. Cambia a un perfil de agente para radicar." : "Registra solicitudes y gestiona tus casos asignados.";
+    updateDashboard(now);
+    renderInbox(now);
+  }
+
+  function updateClientChoices() {
+    const selection = fields.client.value;
+    const query = normalize(fields.customer.value.trim());
+    const entries = data.clients
+      .filter(client => [client.nit, client.razon_social].some(value => normalize(value).includes(query)))
+      .map(client => [client.nit, `${client.razon_social} · ${client.nit}`]);
+    choices(fields.client, entries, entries.length ? "Selecciona un cliente" : "Sin coincidencias");
+    if (entries.some(([nit]) => nit === selection)) fields.client.value = selection;
+  }
+
+  function createTicket(event) {
+    event.preventDefault();
+    if (!isAgent(profile.value)) return;
+    const input = {
+      client: fields.client.value,
+      channel: fields.channel.value,
+      type: fields.type.value,
+      order: fields.order.value.trim(),
+      description: fields.description.value.trim(),
+    };
+    const invalid = [
+      [fields.client, !data.clients.some(client => client.nit === input.client), "Selecciona un cliente."],
+      [fields.channel, !known(channels, input.channel), "Selecciona el canal de origen."],
+      [fields.type, !known(types, input.type), "Selecciona el tipo de solicitud."],
+      [fields.description, input.description.length < 10, "Escribe al menos 10 caracteres en la descripción."],
+    ];
+    for (const [field, fails] of invalid) {
+      if (fails) field.setAttribute("aria-invalid", "true");
+      else field.removeAttribute("aria-invalid");
+    }
+    const errors = invalid.filter(([, fails]) => fails);
+    if (errors.length) {
+      byId("createError").textContent = errors.map(([, , message]) => message).join(" ");
+      errors[0][0].focus();
+      return;
+    }
+    try {
+      const ticket = newTicket(data, input, Date.now(), profile.value);
+      createDialog.close();
+      setDirty(true);
+      setNotice(`Solicitud ${ticket.id} radicada y asignada a ${personName(ticket.agent)}.`);
+      render();
+    } catch (error) {
+      byId("createError").textContent = error.message;
+    }
+  }
+
+  function addDetails(list, pairs) {
+    for (const [label, value, name] of pairs) {
+      const item = element("div");
+      const description = element("dd", value);
+      if (name) description.id = name;
+      item.append(element("dt", label), description);
+      list.append(item);
+    }
+  }
+
+  function describeEvent(event) {
+    if (event.action === "created") return `Radicación · Responsable: ${personName(event.agent)}`;
+    if (event.action === "reassigned") return `Reasignación · ${personName(event.from)} → ${personName(event.to)}`;
+    return `Estado · ${states[event.from]} → ${states[event.to]}`;
+  }
+
+  function detailActions(ticket) {
+    const coordinator = isCoordinator();
+    const canUpdate = ticket.agent === profile.value && transitions[ticket.status].length > 0;
+    if (!(coordinator && isActive(ticket)) && !canUpdate) return null;
+    const stock = byId(coordinator ? "assignTemplate" : "statusTemplate").content.cloneNode(true);
+    const form = stock.querySelector("form");
+    const select = form.elements.next;
+    const error = form.querySelector("[role='alert']");
+    if (coordinator) {
+      choices(select, agents.filter(agent => agent.id !== ticket.agent).map(agent => [agent.id, agent.name]), "Selecciona otro agente");
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        if (!isCoordinator() || !isActive(ticket) || !isAgent(select.value) || select.value === ticket.agent) return;
+        data.history.push({
+          ticket: ticket.id, at: iso(timeFor(ticket)), actor: profile.value, action: "reassigned",
+          from: ticket.agent, to: select.value,
+        });
+        ticket.agent = select.value;
+        updateAfterAction(ticket, "Responsable actualizado.");
+      });
+    } else {
+      const answer = form.elements.answer;
+      choices(select, transitions[ticket.status].map(next => [next, states[next]]), "Selecciona un estado");
+      select.addEventListener("change", () => {
+        const resolving = select.value === "resolved";
+        answer.closest("label").hidden = !resolving;
+        error.textContent = "";
+      });
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        const next = select.value;
+        if (ticket.agent !== profile.value || !transitions[ticket.status].includes(next)) return;
+        const message = answer.value.trim();
+        if (next === "resolved" && !message) {
+          error.textContent = "Escribe la respuesta de fondo antes de resolver la solicitud.";
+          answer.focus();
+          return;
+        }
+        transition(data, ticket, next, message, timeFor(ticket), profile.value);
+        updateAfterAction(ticket, `Estado actualizado a ${states[next]}.`);
+      });
+    }
+    return stock;
+  }
+
+  function renderDetail(ticket, announcement = "") {
+    detailId = ticket.id;
+    byId("detailTitle").textContent = ticket.id;
+    const body = byId("detailBody");
+    const client = data.clients.find(item => item.nit === ticket.client);
+    const summary = element("dl", "", "detail-grid");
+    addDetails(summary, [
+      ["Cliente", `${client.razon_social} · NIT ${client.nit}`],
+      ["Estado", states[ticket.status]],
+      ["Tipo de solicitud", types[ticket.type]],
+      ["Responsable", personName(ticket.agent)],
+      ["Canal", channels[ticket.channel]],
+      ["Recepción", date(ticket.receivedAt)],
+      ["Límite de 48 h (Colombia)", date(deadline(ticket))],
+      ["Plazo", deadlineText(ticket, Date.now()), "detailDeadline"],
+    ]);
+    if (ticket.order) addDetails(summary, [["Referencia de pedido", ticket.order]]);
+    if (!isActive(ticket)) {
+      addDetails(summary, [["Resolución", date(ticket.resolvedAt)], ["Horas de atención", numberFormat.format(elapsed(ticket) / HOUR)]]);
+    }
+    const message = element("p", announcement, "notice");
+    message.setAttribute("role", "status");
+    body.replaceChildren(message, summary, element("h3", "Descripción"), element("p", ticket.description, "description"));
+    if (ticket.answer) body.append(element("h3", "Respuesta de fondo"), element("p", ticket.answer, "description"));
+    const actions = detailActions(ticket);
+    if (actions) body.append(actions);
+    const timeline = element("section", "", "detail-section");
+    const history = element("ol", "", "history");
+    for (const event of data.history.filter(event => event.ticket === ticket.id)) {
+      const entry = element("li", describeEvent(event));
+      entry.append(element("small", `${date(event.at)} · ${personName(event.actor)}`));
+      history.append(entry);
+    }
+    timeline.append(element("h3", "Historial"), history);
+    body.append(timeline);
+  }
+
+  function updateAfterAction(ticket, message) {
+    setDirty(true);
+    render();
+    renderDetail(ticket, message);
+    detailDialog.querySelector("[data-close]").focus();
+  }
+
+  function refreshClock() {
+    const now = Date.now();
+    updateDashboard(now);
+    if (selectedBand) {
+      const expected = matchedTickets(now).map(([ticket]) => ticket.id);
+      const displayed = [...byId("tickets").querySelectorAll("tr[data-ticket]")].map(row => row.dataset.ticket);
+      if (expected.join(",") !== displayed.join(",")) renderInbox(now);
+    } else {
+      const tickets = new Map(data.tickets.map(ticket => [ticket.id, ticket]));
+      for (const row of byId("tickets").querySelectorAll("tr[data-ticket]")) {
+        setRowDeadline(row, tickets.get(row.dataset.ticket), now);
+      }
+    }
+    if (detailDialog.open) {
+      const ticket = data.tickets.find(item => item.id === detailId);
+      byId("detailDeadline").textContent = deadlineText(ticket, now);
+    }
+  }
+
+  function initFilters() {
+    choices(byId("stateFilter"), Object.entries(states), "Todos los estados");
+    choices(byId("channelFilter"), Object.entries(channels), "Todos los canales");
+    choices(byId("agentFilter"), agents.map(agent => [agent.id, agent.name]), "Todo el equipo");
+  }
+
+  function resetFilters() {
+    selectedBand = "";
+    filters.forEach(field => { field.value = ""; });
+  }
+
+  async function importClients(file, operation) {
+    const result = byId("importResult");
+    try {
+      const source = (await file.text()).replace(/^\uFEFF/, "");
+      if (operation !== fileOperation || !isCoordinator()) return;
+      const clients = readClients(file.name.toLowerCase().endsWith(".csv") ? parseCsv(source) : parseJson(source));
+      const knownNits = new Set(data.clients.map(client => client.nit));
+      const additions = clients.filter(client => {
+        if (knownNits.has(client.nit)) return false;
+        knownNits.add(client.nit);
+        return true;
+      });
+      data.clients.push(...additions);
+      if (additions.length) setDirty(true);
+      result.textContent = `Clientes agregados: ${additions.length}. NIT duplicados omitidos: ${clients.length - additions.length}.`;
+    } catch (error) {
+      if (operation === fileOperation) result.textContent = `Importación rechazada. ${error.message}`;
+    }
+  }
+
+  function exportBackup() {
+    if (!isCoordinator()) return;
+    const file = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(file);
+    const download = element("a");
+    download.href = url;
+    download.download = `aurora-respaldo-${iso(Date.now()).slice(0, 10)}.json`;
+    document.body.append(download);
+    download.click();
+    download.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setDirty(false, "Respaldo exportado");
+    byId("backupResult").textContent = "Se inició la descarga del respaldo JSON.";
+  }
+
+  async function restoreBackup(file, operation) {
+    const result = byId("backupResult");
+    try {
+      const source = (await file.text()).replace(/^\uFEFF/, "");
+      if (operation !== fileOperation || !isCoordinator()) return;
+      const incoming = readBackup(source);
+      confirmDialog.returnValue = "cancel";
+      confirmDialog.showModal();
+      await new Promise(resolve => confirmDialog.addEventListener("close", resolve, { once: true }));
+      if (operation !== fileOperation || !isCoordinator()) return;
+      if (confirmDialog.returnValue !== "restore") {
+        result.textContent = "Se canceló la restauración.";
+        return;
+      }
+      data = incoming;
+      resetFilters();
+      setNotice();
+      setDirty(false, "Sesión restaurada desde un respaldo");
+      byId("importResult").textContent = "";
+      result.textContent = `Respaldo restaurado: ${data.tickets.length} solicitudes.`;
+      render();
+    } catch (error) {
+      if (operation === fileOperation) result.textContent = `Restauración rechazada. ${error.message}`;
+    }
+  }
+
+  function watchFile(id, action) {
+    byId(id).addEventListener("change", event => {
+      const [file] = event.target.files;
+      event.target.value = "";
+      if (file && isCoordinator()) action(file, ++fileOperation);
+    });
+  }
+
+  byId("downloadApp").hidden = !["http:", "https:"].includes(location.protocol);
+  choices(profile, people.map(person => [person.id, person.name]));
+  choices(fields.channel, Object.entries(channels), "Selecciona un canal");
+  choices(fields.type, Object.entries(types), "Selecciona un tipo");
+  initFilters();
+  profile.addEventListener("change", () => {
+    fileOperation++;
+    resetFilters();
+    setNotice();
+    render();
+  });
+  byId("create").addEventListener("click", () => {
+    if (!isAgent(profile.value)) return;
+    createForm.reset();
+    createForm.querySelectorAll("[aria-invalid]").forEach(field => field.removeAttribute("aria-invalid"));
+    byId("createError").textContent = "";
+    updateClientChoices();
+    createDialog.showModal();
+    fields.customer.focus();
+  });
+  fields.customer.addEventListener("input", updateClientChoices);
+  createForm.addEventListener("submit", createTicket);
+  for (const button of document.querySelectorAll("[data-close]")) {
+    button.addEventListener("click", () => button.closest("dialog").close());
+  }
+  byId("tickets").addEventListener("click", event => {
+    const id = event.target.closest("button")?.dataset.ticket;
+    const ticket = data.tickets.find(item => item.id === id);
+    if (!ticket || !maySee(ticket)) return;
+    renderDetail(ticket);
+    detailDialog.showModal();
+  });
+  for (const filter of filters) filter.addEventListener("input", () => renderInbox(Date.now()));
+  byId("clear").addEventListener("click", () => {
+    resetFilters();
+    render();
+    byId("search").focus();
+  });
+  byId("metrics").addEventListener("click", event => {
+    const band = event.target.closest("button")?.dataset.band;
+    if (!band || !isCoordinator()) return;
+    filters.forEach(field => { field.value = ""; });
+    selectedBand = selectedBand === band ? "" : band;
+    render();
+  });
+  byId("export").addEventListener("click", exportBackup);
+  watchFile("importFile", importClients);
+  watchFile("restoreFile", restoreBackup);
+  render();
+  window.setInterval(refreshClock, 1000);
+})();
+</script>
+</body>
+</html>

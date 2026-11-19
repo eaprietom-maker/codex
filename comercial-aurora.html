@@ -159,10 +159,16 @@ dd { margin:0; overflow-wrap:anywhere }
     <div class="data-grid">
       <div>
         <h3>Directorio de clientes</h3>
-        <p class="help">CSV con encabezados <code>nit,razon_social</code> o JSON con esas dos claves. Escribe el NIT como texto para conservar los ceros iniciales.</p>
+        <p class="help">CSV o JSON con <code>nit</code> y <code>razon_social</code>. Puedes incluir <code>correo</code>. Escribe el NIT como texto para conservar los ceros iniciales.</p>
         <label for="importFile">Importar clientes</label>
         <input id="importFile" type="file" accept=".csv,.json">
         <p class="help" id="importResult" role="status"></p>
+        <form id="contactForm" class="detail-section">
+          <label>Cliente del directorio<select name="client" required></select></label>
+          <label>Correo de contacto (opcional)<input name="email" type="email" maxlength="254" autocomplete="off"></label>
+          <button class="btn" type="submit">Guardar correo</button>
+          <p class="help" id="contactResult" role="status"></p>
+        </form>
       </div>
       <div>
         <h3>Respaldo de la sesión</h3>
@@ -234,7 +240,7 @@ dd { margin:0; overflow-wrap:anywhere }
   const HOUR = 3_600_000;
   const LIMIT = 48 * HOUR;
   const ZONE = "America/Bogota";
-  const VERSION = 1;
+  const VERSION = 2;
   const people = [
     { id: "coordinator", name: "Coordinador", role: "coordinator" },
     { id: "agent1", name: "Agente 1", role: "agent" },
@@ -308,6 +314,17 @@ dd { margin:0; overflow-wrap:anywhere }
   const normalize = text => text.toLocaleLowerCase("es-CO").normalize("NFD").replace(/\p{Diacritic}/gu, "");
   const validText = text => typeof text === "string" && text.trim().length > 0;
 
+  const validEmail = value => typeof value === "string" && value.length <= 254 &&
+    /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+$/i.test(value);
+  const contactForm = byId("contactForm");
+  const mailEnabled = window.isSecureContext && document.documentElement.dataset.correo === "activo";
+  const noticeLabels = {
+    skipped: "Omitido · El cliente no tiene un correo válido",
+    pending: "Pendiente de confirmación",
+    failed: "Fallido · El servicio rechazó el aviso",
+    sent: "Enviado · Aceptado por el servicio de correo",
+  };
+  const inFlight = new Set();
   let data = demonstration(Date.now());
   let selectedBand = "";
   let detailId = "";
@@ -343,15 +360,17 @@ dd { margin:0; overflow-wrap:anywhere }
 
   function transition(state, ticket, next, answer, time, actor) {
     const at = iso(time);
-    state.history.push({
+    const event = {
       ticket: ticket.id, at, actor, action: "status",
       from: ticket.status, to: next, ...(next === "resolved" ? { answer } : {}),
-    });
+    };
+    state.history.push(event);
     ticket.status = next;
     if (next === "resolved") {
       ticket.resolvedAt = at;
       ticket.answer = answer;
     }
+    return event;
   }
 
   function demonstration(now) {
@@ -465,12 +484,13 @@ dd { margin:0; overflow-wrap:anywhere }
     const header = rows.shift();
     const nit = header?.indexOf("nit");
     const name = header?.indexOf("razon_social");
-    if (header?.length !== 2 || nit < 0 || name < 0) {
-      throw new Error("El CSV debe incluir los encabezados nit y razon_social.");
+    const email = header?.indexOf("correo");
+    if (!header || nit < 0 || name < 0 || (header.length !== 2 && (header.length !== 3 || email < 0))) {
+      throw new Error("El CSV debe incluir nit y razon_social. La columna correo es opcional.");
     }
     return rows.map((columns, index) => {
       if (columns.length !== header.length) throw new Error(`Columnas inválidas en el registro CSV ${index + 1}.`);
-      return { nit: columns[nit], razon_social: columns[name] };
+      return { nit: columns[nit], razon_social: columns[name], correo: columns[email] };
     });
   }
 
@@ -480,7 +500,11 @@ dd { margin:0; overflow-wrap:anywhere }
       if (!validText(item?.nit) || !validText(item?.razon_social)) {
         throw new Error(`Registro ${index + 1}: escribe el NIT y la razón social como texto.`);
       }
-      return { nit: item.nit.trim(), razon_social: item.razon_social.trim() };
+      const email = typeof item.correo === "string" ? item.correo.trim() : item.correo;
+      if (email !== undefined && email !== "" && !validEmail(email)) {
+        throw new Error(`Registro ${index + 1}: el correo de contacto no es válido.`);
+      }
+      return { nit: item.nit.trim(), razon_social: item.razon_social.trim(), ...(email ? { correo: email } : {}) };
     });
   }
 
@@ -497,7 +521,7 @@ dd { margin:0; overflow-wrap:anywhere }
 
   function readBackup(source) {
     const backup = parseJson(source);
-    if (!isRecord(backup) || backup.version !== VERSION) throw new Error("Versión de respaldo incompatible.");
+    if (!isRecord(backup) || ![1, VERSION].includes(backup.version)) throw new Error("Versión de respaldo incompatible.");
     const { users, tickets, history, sequences, nextAgent } = backup;
     if (!Array.isArray(users) || users.length !== people.length || !people.every(person =>
       users.some(user => user?.id === person.id && user.name === person.name && user.role === person.role)
@@ -541,11 +565,23 @@ dd { margin:0; overflow-wrap:anywhere }
 
   function validateHistory(events, ticketsById) {
     const log = new Map();
+    const noticeIds = new Set();
     for (const event of events) {
       const ticket = ticketsById.get(event?.ticket);
       const actor = people.find(person => person.id === event?.actor);
       if (!ticket || !actor || !isInstant(event.at)) {
         throw new Error("El historial contiene referencias o fechas inválidas.");
+      }
+      if (event.notice !== undefined) {
+        const notice = event.notice;
+        if (event.action !== "status" || !["resolved", "closed"].includes(event.to) ||
+            !isRecord(notice) || typeof notice.id !== "string" ||
+            !/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(notice.id) ||
+            noticeIds.has(notice.id) || !known(noticeLabels, notice.status) ||
+            (notice.status === "skipped" ? notice.email !== "" : !validEmail(notice.email))) {
+          throw new Error("El historial contiene un aviso de correo inválido o duplicado.");
+        }
+        noticeIds.add(notice.id);
       }
       const previous = log.get(ticket.id);
       if (event.action === "created" && !previous && actor.role === "agent" &&
@@ -711,6 +747,7 @@ dd { margin:0; overflow-wrap:anywhere }
     byId("dashboard").hidden = !coordinator;
     byId("data").hidden = !coordinator;
     byId("responsibleLabel").hidden = !coordinator;
+    if (coordinator) updateContactChoices();
     byId("subtitle").textContent = coordinator ? "Consulta los casos del equipo. Cambia a un perfil de agente para radicar." : "Registra solicitudes y gestiona tus casos asignados.";
     updateDashboard(now);
     renderInbox(now);
@@ -817,11 +854,76 @@ dd { margin:0; overflow-wrap:anywhere }
           answer.focus();
           return;
         }
-        transition(data, ticket, next, message, timeFor(ticket), profile.value);
+        const change = transition(data, ticket, next, message, timeFor(ticket), profile.value);
+        if (next === "resolved" || next === "closed") {
+          const email = data.clients.find(client => client.nit === ticket.client).correo ?? "";
+          change.notice = {
+            id: crypto.randomUUID(),
+            email,
+            status: validEmail(email) ? "pending" : "skipped",
+          };
+        }
         updateAfterAction(ticket, `Estado actualizado a ${states[next]}.`);
+        if (change.notice?.status === "pending") void sendNotice(change);
       });
     }
     return stock;
+  }
+
+  function renderNotice(container, change) {
+    const { notice } = change;
+    let label = noticeLabels[notice.status];
+    if (notice.status === "pending" && !mailEnabled) label += " · Requiere abrir la aplicación con el servicio de correo";
+    if (inFlight.has(notice.id)) label = "Procesando aviso…";
+    const status = element("small", `Correo · ${label}`);
+    status.setAttribute("role", "status");
+    container.replaceChildren(status);
+    if (mailEnabled && notice.status === "pending" && !inFlight.has(notice.id)) {
+      const retry = element("button", "Consultar o procesar aviso", "btn");
+      retry.type = "button";
+      retry.addEventListener("click", () => void sendNotice(change));
+      container.append(retry);
+    }
+  }
+
+  function refreshNotice(change) {
+    const container = byId(`notice-${change.notice.id}`);
+    if (container) renderNotice(container, change);
+  }
+
+  async function sendNotice(change) {
+    const { notice } = change;
+    if (!mailEnabled || notice.status !== "pending" || inFlight.has(notice.id)) return;
+    const session = data;
+    inFlight.add(notice.id);
+    refreshNotice(change);
+    try {
+      const response = await fetch("/api/avisos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Aurora-Request": "aviso" },
+        body: JSON.stringify({
+          id: notice.id, ticket: change.ticket, to: notice.email, status: change.to,
+          ...(change.to === "resolved" ? { answer: change.answer } : {}),
+        }),
+        signal: AbortSignal.timeout(12000),
+      });
+      if (response.ok || response.status === 400 || response.status === 409) {
+        const result = await response.json();
+        if (result.status === "sent" || result.status === "failed" || result.status === "conflict") {
+          notice.status = result.status === "sent" ? "sent" : "failed";
+          if (data === session) setDirty(true);
+        }
+      }
+    } catch {
+      // El navegador puede quedar sin conexión incluso después de enviar el pedido.
+    } finally {
+      inFlight.delete(notice.id);
+      if (data === session) refreshNotice(change);
+      else {
+        const restored = data.history.find(event => event.notice?.id === notice.id);
+        if (restored) refreshNotice(restored);
+      }
+    }
   }
 
   function renderDetail(ticket, announcement = "") {
@@ -855,6 +957,12 @@ dd { margin:0; overflow-wrap:anywhere }
     for (const event of data.history.filter(event => event.ticket === ticket.id)) {
       const entry = element("li", describeEvent(event));
       entry.append(element("small", `${date(event.at)} · ${personName(event.actor)}`));
+      if (event.notice) {
+        const container = element("div");
+        container.id = `notice-${event.notice.id}`;
+        renderNotice(container, event);
+        entry.append(container);
+      }
       history.append(entry);
     }
     timeline.append(element("h3", "Historial"), history);
@@ -898,6 +1006,37 @@ dd { margin:0; overflow-wrap:anywhere }
     filters.forEach(field => { field.value = ""; });
   }
 
+  function showContact() {
+    const client = data.clients.find(item => item.nit === contactForm.elements.client.value);
+    contactForm.elements.email.value = client?.correo ?? "";
+    byId("contactResult").textContent = "";
+  }
+
+  function updateContactChoices() {
+    const select = contactForm.elements.client;
+    const previous = select.value;
+    choices(select, data.clients.map(client => [client.nit, `${client.razon_social} · ${client.nit}`]), "Selecciona un cliente");
+    if (data.clients.some(client => client.nit === previous)) select.value = previous;
+    showContact();
+  }
+
+  contactForm.elements.client.addEventListener("change", showContact);
+  contactForm.addEventListener("submit", event => {
+    event.preventDefault();
+    if (!isCoordinator()) return;
+    const client = data.clients.find(item => item.nit === contactForm.elements.client.value);
+    if (!client) return;
+    const email = contactForm.elements.email.value.trim();
+    if (email && !validEmail(email)) {
+      byId("contactResult").textContent = "Escribe un correo de contacto válido.";
+      return;
+    }
+    if (email) client.correo = email;
+    else delete client.correo;
+    setDirty(true);
+    byId("contactResult").textContent = email ? "Correo guardado." : "Correo retirado.";
+  });
+
   async function importClients(file, operation) {
     const result = byId("importResult");
     try {
@@ -911,7 +1050,10 @@ dd { margin:0; overflow-wrap:anywhere }
         return true;
       });
       data.clients.push(...additions);
-      if (additions.length) setDirty(true);
+      if (additions.length) {
+        setDirty(true);
+        updateContactChoices();
+      }
       result.textContent = `Clientes agregados: ${additions.length}. NIT duplicados omitidos: ${clients.length - additions.length}.`;
     } catch (error) {
       if (operation === fileOperation) result.textContent = `Importación rechazada. ${error.message}`;
@@ -968,6 +1110,7 @@ dd { margin:0; overflow-wrap:anywhere }
   }
 
   byId("downloadApp").hidden = !["http:", "https:"].includes(location.protocol);
+  if (mailEnabled) byId("downloadApp").href = "/descargar/comercial-aurora.html";
   choices(profile, people.map(person => [person.id, person.name]));
   choices(fields.channel, Object.entries(channels), "Selecciona un canal");
   choices(fields.type, Object.entries(types), "Selecciona un tipo");

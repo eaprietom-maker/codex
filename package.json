@@ -1,0 +1,14 @@
+{
+  "name": "proyecto",
+  "version": "1.0.0",
+  "scripts": {
+    "openspec": "openspec"
+  },
+  "devDependencies": {
+    "@fission-ai/openspec": "2.1.0"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.20.0"
+  }
+}
